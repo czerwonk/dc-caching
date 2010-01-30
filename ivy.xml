@@ -6,6 +6,7 @@
           status="integration" />
 	<dependencies>
 	   <dependency org="org.aspectj" name="aspectjrt" rev="1.6.7" />
-	   <dependency org="junit" name="junit" rev="latest.integration"/>
+	   <dependency org="junit" name="junit" rev="latest.integration" />
+	   <dependency org="org.mockito" name="mockito-core" rev="latest.integration"/>
 	</dependencies>	
 </ivy-module>
