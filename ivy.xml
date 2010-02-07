@@ -7,7 +7,7 @@
           revision="1.0.0" />
     <configurations>
         <conf name="build" />
-        <conf name="test" extends="build" />
+        <conf name="test" extends="build" visibility="private" />
     </configurations>
 	<dependencies>
 	   <dependency org="org.aspectj" name="aspectjrt" rev="1.6.7" />
