@@ -4,7 +4,7 @@
     <info organisation="de.dan_nrw"
           module="caching"
           status="stable"
-          revision="1.0.0" />
+          revision="1.1.0" />
     <configurations>
         <conf name="build" />
         <conf name="test" extends="build" visibility="private" />
