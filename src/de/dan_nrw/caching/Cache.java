@@ -20,7 +20,7 @@ package de.dan_nrw.caching;
 
 
 /**
- * @author Daniel Czerwonk
+ * @author Daniel Czerwonk <d.czerwonk@googlemail.com>
  *
  */
 public abstract class Cache {
@@ -45,31 +45,36 @@ public abstract class Cache {
     }
     
     
+    public abstract Iterable<String> getKeys();
+    
     /**
      * Adds an object to the cache
-     * @param key
-     * @param value
+     * @param key Key to use for indexing value
+     * @param value Value to put in the cache
+     * @param durability Time of validity in milliseconds (0 = unlimited)
      */
-    public abstract void put(String key, Object value);
+    public abstract void put(String key, Object value, long durability);
     
     /**
      * Retrieves an object by key
      * @param <T>
-     * @param key
+     * @param key Key to use for finding value
      * @return
+     * @throws IllegalArgumentException if key was not found in cache
+     * @throws CachedDataExpiredException if validity of cached data expired
      */
-    public abstract <T> T get(String key);
+    public abstract <T> T get(String key) throws IllegalArgumentException, CachedDataExpiredException;
     
     /**
      * Determines if the cache contains the specified key
-     * @param key
+     * @param key Key to use for finding value
      * @return
      */
     public abstract boolean containsKey(String key);
     
     /**
      * Removes an object from the cache
-     * @param key
+     * @param key Key to use for finding value
      */
     public abstract void removeKey(String key);
 }

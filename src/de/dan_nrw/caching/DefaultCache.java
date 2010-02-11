@@ -21,20 +21,29 @@ package de.dan_nrw.caching;
 import java.util.Hashtable;
 import java.util.Map;
 
+
 /**
- * @author Daniel Czerwonk
+ * @author Daniel Czerwonk <d.czerwonk@googlemail.com>
  */
 final class DefaultCache extends Cache {
 	
-	private static Map<String, Object> internalCache = new Hashtable<String, Object>();
+	private static Map<String, CacheEntry> internalCache = new Hashtable<String, CacheEntry>();
 	
-
+	
 	/* (non-Javadoc)
+     * @see de.dan_nrw.caching.Cache#getKeys()
+     */
+    @Override
+    public Iterable<String> getKeys() {
+        return internalCache.keySet();
+    }
+
+    /* (non-Javadoc)
 	 * @see de.dan_nrw.caching.Cache#put(java.lang.String, java.lang.Object)
 	 */
 	@Override
-	public void put(String key, Object value) {
-		internalCache.put(key, value);
+	public void put(String key, Object value, long durability) {
+		internalCache.put(key, new CacheEntry(value, durability));
 	}
 	
 	/* (non-Javadoc)
@@ -42,8 +51,18 @@ final class DefaultCache extends Cache {
 	 */
 	@SuppressWarnings("unchecked")
     @Override
-	public <T> T get(String key) {
-		return (T)internalCache.get(key);
+	public <T> T get(String key) throws IllegalArgumentException, CachedDataExpiredException {
+	    if (!internalCache.containsKey(key)) {
+	        throw new IllegalArgumentException("key not found!");
+	    }
+	    
+	    CacheEntry cacheEntry = internalCache.get(key);
+	    
+	    if (!cacheEntry.isValid()) {
+	        throw new CachedDataExpiredException();
+	    }
+	    
+		return (T)cacheEntry.getObject();
 	}
 	
 	/* (non-Javadoc)
@@ -51,7 +70,12 @@ final class DefaultCache extends Cache {
 	 */
 	@Override
 	public boolean containsKey(String key) {
-		return internalCache.containsKey(key);
+	    if (internalCache.containsKey(key)) {
+	        CacheEntry cacheEntry = internalCache.get(key);
+	        return cacheEntry.isValid();
+	    }
+	    
+		return false;
 	}
 	
 	/* (non-Javadoc)
