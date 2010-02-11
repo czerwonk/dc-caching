@@ -23,11 +23,14 @@ import java.util.List;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.junit.matchers.JUnitMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 
 import static org.mockito.Mockito.*;
 
 import de.dan_nrw.caching.Cachable;
+import de.dan_nrw.caching.Cache;
 
 
 /**
@@ -76,6 +79,19 @@ public class CachingAspectTests {
         verify(dataRetriever, times(1)).getData();
     }
     
+    @Test
+    public void caching_data_should_respect_durability() throws InterruptedException {
+        IDataRetriever<Integer> dataRetriever = mock(IIntegerDataRetriever.class);
+        when(dataRetriever.getData()).thenReturn(10);
+        ClassUnderTest<Integer> test = new ClassUnderTest<Integer>(dataRetriever);
+        
+        test.getDataFromDataRetrieverOrCacheWithDurability();
+        
+        Thread.sleep(600);
+        
+        assertThat(Cache.getCurrent().getKeys(), not(hasItem("foo2")));
+    }
+    
     
     private static class ClassUnderTest<T> {
         
@@ -87,6 +103,11 @@ public class CachingAspectTests {
         
         @Cachable(key = "foo")
         public T getDataFromDataRetrieverOrCache() {
+            return this.dataRetriever.getData();
+        }
+        
+        @Cachable(key = "foo2", durability = 500)
+        public T getDataFromDataRetrieverOrCacheWithDurability() {
             return this.dataRetriever.getData();
         }
     }

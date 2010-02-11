@@ -45,6 +45,10 @@ public abstract class Cache {
     }
     
     
+    /**
+     * Returns a list of currently valid keys
+     * @return
+     */
     public abstract Iterable<String> getKeys();
     
     /**

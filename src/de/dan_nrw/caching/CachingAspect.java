@@ -43,9 +43,17 @@ public class CachingAspect {
 		Cachable cachableAnnotation = (Cachable)methodSignature.getMethod().getAnnotation(Cachable.class);
 		Cache cache = Cache.getCurrent();
 		
-		if (cache.containsKey(cachableAnnotation.key())) {
-			// if key is already in cache
-			return cache.get(cachableAnnotation.key());
+		try {
+	        if (cache.containsKey(cachableAnnotation.key())) {
+	            // if key is already in cache and data is not expired
+	            return cache.get(cachableAnnotation.key());
+	        }		    
+		}
+		catch (IllegalArgumentException ex) {
+		    // if key does not exists, data must be retrieved
+		}
+		catch (CachedDataExpiredException ex) {
+		    // if data stored in cache is expired, it must be retrieved
 		}
 
 		// determinig data
@@ -53,7 +61,7 @@ public class CachingAspect {
 		
 		// cache is filled
 		if (data != null) {
-			cache.put(cachableAnnotation.key(), data);	
+			cache.put(cachableAnnotation.key(), data, cachableAnnotation.durability());	
 		}
 		
 		// returning result

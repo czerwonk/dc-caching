@@ -18,8 +18,11 @@
  */
 package de.dan_nrw.caching;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 
 /**
@@ -35,7 +38,15 @@ final class DefaultCache extends Cache {
      */
     @Override
     public Iterable<String> getKeys() {
-        return internalCache.keySet();
+        List<String> keys = new ArrayList<String>();
+
+        for (Entry<String, CacheEntry> entry : internalCache.entrySet()) {
+            if (entry.getValue().isValid()) {
+                keys.add(entry.getKey());
+            }
+        }
+        
+        return keys;
     }
 
     /* (non-Javadoc)
