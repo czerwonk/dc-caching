@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 import static org.mockito.Mockito.*;
 
@@ -40,8 +41,8 @@ public class CachingAspectTests {
         when(dataRetriever.getData()).thenReturn(10);
         ClassUnderTest<Integer> test = new ClassUnderTest<Integer>(dataRetriever);
         
-        assertEquals(10, test.getDataFromDataRetrieverOrCache().intValue());
-        assertEquals(10, test.getDataFromDataRetrieverOrCache().intValue());
+        assertThat(10, equalTo(test.getDataFromDataRetrieverOrCache().intValue()));
+        assertThat(10, equalTo(test.getDataFromDataRetrieverOrCache().intValue()));
         
         verify(dataRetriever, times(1)).getData();
     }
@@ -52,8 +53,8 @@ public class CachingAspectTests {
         when(dataRetriever.getData()).thenReturn("test");
         ClassUnderTest<String> test = new ClassUnderTest<String>(dataRetriever);
         
-        assertEquals("test", test.getDataFromDataRetrieverOrCache());
-        assertEquals("test", test.getDataFromDataRetrieverOrCache());
+        assertThat("test", equalTo(test.getDataFromDataRetrieverOrCache()));
+        assertThat("test", equalTo(test.getDataFromDataRetrieverOrCache()));
         
         verify(dataRetriever, times(1)).getData();
     }
@@ -69,8 +70,8 @@ public class CachingAspectTests {
         when(dataRetriever.getData()).thenReturn(list);
         ClassUnderTest<List<String>> test = new ClassUnderTest<List<String>>(dataRetriever);
         
-        assertEquals(list, test.getDataFromDataRetrieverOrCache());
-        assertEquals(list, test.getDataFromDataRetrieverOrCache());
+        assertThat(list, equalTo(test.getDataFromDataRetrieverOrCache()));
+        assertThat(list, equalTo(test.getDataFromDataRetrieverOrCache()));
         
         verify(dataRetriever, times(1)).getData();
     }
