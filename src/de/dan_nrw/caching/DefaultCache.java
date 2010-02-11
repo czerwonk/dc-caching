@@ -37,7 +37,7 @@ final class DefaultCache extends Cache {
      * @see de.dan_nrw.caching.Cache#getKeys()
      */
     @Override
-    public Iterable<String> getKeys() {
+    public synchronized Iterable<String> getKeys() {
         List<String> keys = new ArrayList<String>();
 
         for (Entry<String, CacheEntry> entry : internalCache.entrySet()) {
@@ -53,7 +53,7 @@ final class DefaultCache extends Cache {
 	 * @see de.dan_nrw.caching.Cache#put(java.lang.String, java.lang.Object)
 	 */
 	@Override
-	public void put(String key, Object value, long durability) {
+	public synchronized void put(String key, Object value, long durability) {
 		internalCache.put(key, new CacheEntry(value, durability));
 	}
 	
@@ -62,7 +62,7 @@ final class DefaultCache extends Cache {
 	 */
 	@SuppressWarnings("unchecked")
     @Override
-	public <T> T get(String key) throws IllegalArgumentException, CachedDataExpiredException {
+	public synchronized <T> T get(String key) throws IllegalArgumentException, CachedDataExpiredException {
 	    if (!internalCache.containsKey(key)) {
 	        throw new IllegalArgumentException("key not found!");
 	    }
@@ -80,7 +80,7 @@ final class DefaultCache extends Cache {
 	 * @see de.dan_nrw.caching.Cache#containsKey(java.lang.String)
 	 */
 	@Override
-	public boolean containsKey(String key) {
+	public synchronized boolean containsKey(String key) {
 	    if (internalCache.containsKey(key)) {
 	        CacheEntry cacheEntry = internalCache.get(key);
 	        return cacheEntry.isValid();
@@ -93,7 +93,7 @@ final class DefaultCache extends Cache {
 	 * @see de.dan_nrw.caching.Cache#removeKey(java.lang.String)
 	 */
 	@Override
-	public void removeKey(String key) {
+	public synchronized void removeKey(String key) {
 		internalCache.remove(key);
 	}
 }
