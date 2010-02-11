@@ -81,4 +81,9 @@ public abstract class Cache {
      * @param key Key to use for finding value
      */
     public abstract void removeKey(String key);
+    
+    /**
+     * Removes all data from the cache
+     */
+    public abstract void clear();
 }

@@ -96,4 +96,12 @@ final class DefaultCache extends Cache {
 	public synchronized void removeKey(String key) {
 		internalCache.remove(key);
 	}
+
+    /* (non-Javadoc)
+     * @see de.dan_nrw.caching.Cache#clear()
+     */
+    @Override
+    public synchronized void clear() {
+        internalCache.clear();
+    }
 }
