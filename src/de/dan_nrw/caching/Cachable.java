@@ -36,4 +36,10 @@ public @interface Cachable {
 	 * @return
 	 */
 	public String key();
+	
+	/**
+	 * Time of validity in milliseconds (0 = unlimited)
+	 * @return
+	 */
+	public long durability() default 0;
 }
