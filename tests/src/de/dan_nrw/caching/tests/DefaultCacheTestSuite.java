@@ -31,7 +31,7 @@ import static org.hamcrest.CoreMatchers.not;
  * @author Daniel Czerwonk <d.czerwonk@googlemail.com>
  *
  */
-public class DefaultCacheTests {
+public class DefaultCacheTestSuite {
 
     @Test
     public void put_should_add_object_to_cache() throws CachedDataExpiredException {

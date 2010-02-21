@@ -36,7 +36,7 @@ import de.dan_nrw.caching.Cache;
 /**
  * @author Daniel Czerwonk <d.czerwonk@googlemail.com>
  */
-public class CachingAspectTests {
+public class CachingAspectTestSuite {
 
     @Test
     public void data_retrieving_method_should_use_cache_at_second_call_for_integer() {
